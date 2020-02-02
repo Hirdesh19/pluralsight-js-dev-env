@@ -1,21 +1,17 @@
 import express from 'express';
-import config from '../webpack.config.dev';
 import path from 'path';
 import open from 'open';
-import webpack from 'webpack';
+import compression from  'compression'
 
 var port=2200;
 var app=express();
-const compiler=webpack(config);
 
-app.use(require('webpack-dev-middleware')(compiler,{
-  noInfo:true,
-  publicPath:config.output.publicPath
-}))
-
+app.use(express.static('dist'));
+app.use(compression);
 app.get('/',function(req,res){
-res.sendFile(path.join(__dirname,'../src/index.html'))
+res.sendFile(path.join(__dirname,'../dist/index.html'))
 });
+
 app.get('/users',function(req,res){
   res.json([
     {"id":1 ,"firstName":"Bob","lastName":"Smith","email":"bob@gmail.com"},
